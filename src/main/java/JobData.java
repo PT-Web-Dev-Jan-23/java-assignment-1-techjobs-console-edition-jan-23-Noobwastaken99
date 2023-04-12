@@ -36,14 +36,14 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
             String aValue = row.get(field);
-
+            /* MAYBE add .toLoweCase() to top and bottom */
             if (!values.contains(aValue)) {
                 values.add(aValue);
             }
         }
 
         // Bonus mission: sort the results
-        Collections.sort(values);
+        Collections.sort(values, String.CASE_INSENSITIVE_ORDER);
 
         return values;
     }
@@ -54,6 +54,7 @@ public class JobData {
         loadData();
 
         // Bonus mission; normal version returns allJobs
+        // clone()? https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html
         return new ArrayList<>(allJobs);
     }
 
@@ -77,9 +78,9 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
-
-            if (aValue.contains(value)) {
+            String aValue = row.get(column).toLowerCase();
+            // added .toLoweCase() to top and bottom
+            if (aValue.contains(value.toLowerCase())) {
                 jobs.add(row);
             }
         }
@@ -99,7 +100,18 @@ public class JobData {
         loadData();
 
         // TODO - implement this method
-        return null;
+        // Doesn't stop dublicates
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+
+            String aValue = row.toString().toLowerCase();
+            // added .toLoweCase() to top and bottom
+            if (aValue.contains(value.toLowerCase()) && !jobs.contains(aValue)) {
+                jobs.add(row);
+            }
+        }
+        return jobs;
     }
 
     /**
